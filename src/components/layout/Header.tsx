@@ -151,21 +151,32 @@ export function Header() {
         {/* Tablet / desktop */}
         <div className="hidden md:flex flex-col w-full max-w-[1400px] xl:mx-auto min-w-0">
           <div className="flex flex-nowrap items-center gap-3 md:gap-4 lg:gap-6 xl:gap-8 min-w-0">
-            <a
-              href="#"
-              className="flex items-center shrink-0 w-[232px] md:w-[256px] lg:w-[280px] min-w-[232px]"
+            <Link
+              href="/"
+              className="flex items-center gap-2 shrink-0 min-w-0"
+              aria-label="HANKET home"
             >
               <Image
-                src="/logo.png"
-                alt="Hanket"
-                width={320}
-                height={128}
-                sizes="(max-width: 1023px) 232px, (max-width: 1279px) 256px, 280px"
-                quality={85}
+                src="/homeicon.png"
+                alt=""
+                width={500}
+                height={500}
+                sizes="(max-width: 1023px) 56px, 64px"
+                quality={90}
                 preload
-                className="h-[60px] md:h-[68px] w-auto max-w-full object-contain"
+                className="h-14 md:h-16 w-auto shrink-0 object-contain"
               />
-            </a>
+              <Image
+                src="/tagline.png"
+                alt=""
+                width={1500}
+                height={900}
+                sizes="(max-width: 1023px) min(160px, 28vw), 200px"
+                quality={90}
+                preload
+                className="h-9 md:h-10 w-auto max-w-[min(200px,30vw)] shrink-0 object-contain"
+              />
+            </Link>
 
             <nav className="flex items-center flex-nowrap justify-start gap-x-2 md:gap-x-3 lg:gap-x-5 xl:gap-x-8 min-w-0 flex-1 overflow-x-auto overscroll-x-contain whitespace-nowrap no-scrollbar py-0.5">
               {navLinks.map((label) => (
@@ -256,7 +267,7 @@ export function Header() {
             <Image
               src="/logo.png"
               alt="Hanket"
-              width={240}
+              width={340}
               height={96}
               sizes="280px"
               quality={85}
