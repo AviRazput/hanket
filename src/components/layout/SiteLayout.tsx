@@ -1,5 +1,6 @@
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { InstallPromptBanner } from "./InstallPromptBanner";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { TopBar } from "./TopBar";
 
@@ -13,6 +14,7 @@ export function SiteLayout({ children }: { children: React.ReactNode }) {
       </main>
       <Footer />
       <MobileBottomNav />
+      <InstallPromptBanner />
     </div>
   );
 }
