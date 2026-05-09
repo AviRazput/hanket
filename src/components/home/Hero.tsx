@@ -64,6 +64,13 @@ function carouselReducer(
 const PRELOAD_AHEAD = 5;
 const PRELOAD_LINKS_MAX = 6;
 
+/** Mobile swipe: min horizontal travel (px) after horizontal vs vertical dominance checks. */
+const SWIPE_OFFSET_PX = 48;
+/** Fast horizontal flick (px/s) can change slide with less offset. */
+const SWIPE_VELOCITY_PX_S = 450;
+/** Require horizontal movement to clearly dominate vertical (avoids fighting page scroll). */
+const SWIPE_DOMINANCE = 1.25;
+
 function IconChevronLeft({ className }: { className?: string }) {
   return (
     <svg
@@ -162,6 +169,42 @@ export function Hero() {
     });
   }, [slideCount]);
 
+  const onMobileSwipeEnd = useCallback(
+    (
+      _event: MouseEvent | TouchEvent | PointerEvent,
+      info: { offset: { x: number; y: number }; velocity: { x: number; y: number } },
+    ) => {
+      if (slideCount <= 1) return;
+
+      const { offset, velocity } = info;
+      const absX = Math.abs(offset.x);
+      const absY = Math.abs(offset.y);
+      const absVx = Math.abs(velocity.x);
+      const absVy = Math.abs(velocity.y);
+
+      const offsetHorizontal = absX >= absY * SWIPE_DOMINANCE;
+      const velocityFlick =
+        absVx >= SWIPE_VELOCITY_PX_S && absVx >= absVy * SWIPE_DOMINANCE;
+      if (!offsetHorizontal && !velocityFlick) return;
+
+      const wantNext =
+        offset.x < -SWIPE_OFFSET_PX || velocity.x < -SWIPE_VELOCITY_PX_S;
+      const wantPrev =
+        offset.x > SWIPE_OFFSET_PX || velocity.x > SWIPE_VELOCITY_PX_S;
+
+      if (wantNext && wantPrev) {
+        if (Math.abs(offset.x) >= SWIPE_OFFSET_PX) {
+          if (offset.x < 0) goNext();
+          else goPrev();
+        }
+        return;
+      }
+      if (wantNext) goNext();
+      else if (wantPrev) goPrev();
+    },
+    [goNext, goPrev, slideCount],
+  );
+
   useEffect(() => {
     const id = window.setInterval(() => {
       if (Date.now() - lastUserActionRef.current < MANUAL_PAUSE_MS) return;
@@ -246,43 +289,55 @@ export function Hero() {
       {/* Mobile: full-bleed banner (hidden from md) */}
       <div
         className={[
-          "md:hidden relative mt-4 overflow-hidden",
+          "md:hidden relative mt-4 overflow-hidden touch-pan-y",
           // Full-bleed: ignore the global max-width container on mobile
           "w-screen left-1/2 -translate-x-1/2",
           // Premium full look: tall + edge-to-edge, no blank bands
           "h-[62vh] min-h-[260px] max-h-[560px]",
           "bg-flat-bg",
         ].join(" ")}
+        style={{ touchAction: "pan-y" }}
       >
-        <AnimatePresence initial={false} mode="popLayout">
-          {slide && mobileSrc ? (
-            <motion.div
-              key={`m-${slide.id}`}
-              className="absolute inset-0"
-              initial={slideMotion.initial}
-              animate={slideMotion.animate}
-              exit={slideMotion.exit}
-              transition={slideMotion.transition}
-            >
-              <Image
-                src={mobileSrc}
-                alt={slide.imageAlt}
-                fill
-                priority={isInitial}
-                fetchPriority={isInitial ? "high" : "auto"}
-                unoptimized
-                sizes="100vw"
-                className="object-cover object-center"
-                style={{ filter: slide.imageFilter }}
-              />
-              {/* subtle overlay helps text-like banners pop while staying “full” */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/10" />
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
+        <motion.div
+          className="absolute inset-0 touch-pan-y"
+          style={{ touchAction: "pan-y" }}
+          drag={slideCount > 1 ? "x" : false}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.12}
+          dragSnapToOrigin
+          onDragEnd={onMobileSwipeEnd}
+        >
+          <AnimatePresence initial={false} mode="popLayout">
+            {slide && mobileSrc ? (
+              <motion.div
+                key={`m-${slide.id}`}
+                className="absolute inset-0"
+                initial={slideMotion.initial}
+                animate={slideMotion.animate}
+                exit={slideMotion.exit}
+                transition={slideMotion.transition}
+              >
+                <Image
+                  src={mobileSrc}
+                  alt={slide.imageAlt}
+                  fill
+                  priority={isInitial}
+                  fetchPriority={isInitial ? "high" : "auto"}
+                  unoptimized
+                  sizes="100vw"
+                  className="object-cover object-center pointer-events-none select-none"
+                  style={{ filter: slide.imageFilter }}
+                  draggable={false}
+                />
+                {/* subtle overlay helps text-like banners pop while staying “full” */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/10 pointer-events-none" />
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </motion.div>
 
         {/* Mobile dots + prev/next (overlaid; arrows match light dot treatment on imagery) */}
-        <div className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4">
+        <div className="absolute inset-x-0 bottom-3 z-10 flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4">
           {slides.length > 1 ? (
             <button
               type="button"
