@@ -49,7 +49,7 @@ export function PromoBanners() {
   return (
     <section className="py-8 bg-flat-bg">
       <div className="max-w-[1500px] mx-auto px-8">
-        <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 md:overflow-visible md:snap-none xl:grid-cols-4 gap-px bg-flat-border border border-flat-border">
+        <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 md:overflow-visible md:snap-none xl:grid-cols-4 gap-px bg-flat-border border border-flat-border">
           {promos.map((p) => (
             <div
               key={p.img}
