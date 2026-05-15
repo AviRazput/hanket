@@ -118,97 +118,16 @@ function CountBadge({ count, variant = "icon" }: { count: number; variant?: "ico
   );
 }
 
-function CatIcon({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="w-5 h-5 shrink-0 inline-flex items-center justify-center text-[#555]">{children}</span>
-  );
-}
-
 const categoryNav = [
-  {
-    label: "Mens",
-    icon: (
-      <CatIcon>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-          <path d="M12 3v4M8 7h8M9 7l-2 14h10L15 7" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </CatIcon>
-    ),
-  },
-  {
-    label: "Womens",
-    icon: (
-      <CatIcon>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-          <path d="M12 4c-2 0-3.5 1.5-3.5 3.5S10 11 12 11s3.5-1.5 3.5-3.5S14 4 12 4zM6 20l6-5 6 5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </CatIcon>
-    ),
-  },
-  {
-    label: "Kids",
-    icon: (
-      <CatIcon>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-          <circle cx="12" cy="8" r="3" />
-          <path d="M6 20c1.5-3 4-4 6-4s4.5 1 6 4" strokeLinecap="round" />
-        </svg>
-      </CatIcon>
-    ),
-  },
-  {
-    label: "Handloom",
-    icon: (
-      <CatIcon>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-          <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
-        </svg>
-      </CatIcon>
-    ),
-  },
-  {
-    label: "GenZ",
-    icon: (
-      <CatIcon>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-          <path d="M12 2l2 6h6l-5 4 2 10-5-4-5 4 2-10-5-4h6z" strokeLinejoin="round" />
-        </svg>
-      </CatIcon>
-    ),
-  },
-  {
-    label: "Accessories",
-    icon: (
-      <CatIcon>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-          <path d="M8 8h8l-1 12H9L8 8zM10 8V6a2 2 0 0 1 4 0v2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </CatIcon>
-    ),
-  },
-  {
-    label: "Beauty",
-    icon: (
-      <CatIcon>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-          <path d="M9 3h6v8a3 3 0 0 1-6 0V3zM12 14v7" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </CatIcon>
-    ),
-  },
-  {
-    label: "Customized",
-    icon: (
-      <CatIcon>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-          <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </CatIcon>
-    ),
-  },
+  "Mens",
+  "Womens",
+  "Kids",
+  "Handloom",
+  "GenZ",
+  "Accessories",
+  "Beauty",
+  "Customized",
 ] as const;
-
-const navLinks = categoryNav.map((c) => c.label);
 
 const logoImageBoost = "contrast-[1.14] saturate-[1.06]";
 
@@ -219,7 +138,7 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const cartCount = 0;
 
-  const drawerLinks = navLinks;
+  const drawerLinks = categoryNav;
   const drawerAccountLinks: { label: string; href?: string; action?: "auth" }[] = [
     { label: "Login / Register", action: "auth" },
     { label: "Wishlist", href: "#" },
@@ -373,16 +292,13 @@ export function Header() {
 
           <div className="border-t border-[#f0f0f0] flex items-center justify-between gap-4 py-3 pb-4">
             <nav className="flex items-center gap-6 lg:gap-8 overflow-x-auto no-scrollbar flex-1 min-w-0">
-              {categoryNav.map(({ label, icon }) => (
+              {categoryNav.map((label) => (
                 <a
                   key={label}
                   href="#"
-                  className="shrink-0 inline-flex items-center gap-2 group"
+                  className="shrink-0 text-[13px] font-semibold text-[#333] hover:text-flat-pink transition-colors whitespace-nowrap"
                 >
-                  {icon}
-                  <span className="text-[13px] font-semibold text-[#333] group-hover:text-flat-pink transition-colors whitespace-nowrap">
-                    {label}
-                  </span>
+                  {label}
                 </a>
               ))}
             </nav>
