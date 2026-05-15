@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 
 const TITLE = "Coming Soon";
+const TAGLINE = ["click", "shop", "smile"] as const;
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function ComingSoon() {
@@ -59,10 +60,42 @@ export function ComingSoon() {
         />
 
         <motion.p
-          className="max-w-md text-[15px] leading-relaxed text-flat-muted md:text-base"
-          initial={{ opacity: 0, y: 16 }}
+          className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[clamp(0.95rem,2.5vw,1.125rem)] font-medium lowercase tracking-[0.22em] text-flat-text md:gap-x-4 md:tracking-[0.28em]"
+          aria-label="click, shop, smile"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1.05 }}
+        >
+          {TAGLINE.map((word, i) => (
+            <span key={word} className="inline-flex items-center gap-x-3 md:gap-x-4">
+              {i > 0 ? (
+                <motion.span
+                  className="text-flat-pink/80 select-none"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.35, delay: 1.12 + i * 0.12, ease: EASE }}
+                  aria-hidden
+                >
+                  —
+                </motion.span>
+              ) : null}
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.55, delay: 1.08 + i * 0.14, ease: EASE }}
+              >
+                {word}
+              </motion.span>
+            </span>
+          ))}
+        </motion.p>
+
+        <motion.p
+          className="mt-6 max-w-md text-[14px] leading-relaxed text-flat-muted md:text-[15px]"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 1.15, ease: EASE }}
+          transition={{ duration: 0.6, delay: 1.45, ease: EASE }}
         >
           We&apos;re crafting something special for you. Our new collection arrives shortly.
         </motion.p>

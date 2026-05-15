@@ -1,3 +1,5 @@
+const INSTAGRAM_URL = "https://www.instagram.com/hanket.in/";
+
 function IconInstagram() {
   return (
     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -32,9 +34,11 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               <a
-                href="#"
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 border border-[#333] flex items-center justify-center hover:bg-white hover:text-black transition-colors"
-                aria-label="Instagram"
+                aria-label="Instagram — @hanket.in"
               >
                 <IconInstagram />
               </a>

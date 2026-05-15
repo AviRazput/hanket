@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { instaImages } from "../../data/products";
 
+const INSTAGRAM_URL = "https://www.instagram.com/hanket.in/";
+
 function IconInstagramOutline() {
   return (
     <svg
@@ -25,7 +27,14 @@ export function InstagramSection() {
           <div className="text-[0.75rem] leading-[1.5] tracking-[0.15em] text-flat-muted uppercase mb-4">
             Follow Us on Instagram
           </div>
-          <h2 className="mb-4 text-flat-text text-[2.5rem] leading-[1.2]">@hanket.official</h2>
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mb-4 inline-block text-flat-text text-[2.5rem] leading-[1.2] hover:text-flat-pink transition-colors"
+          >
+            @hanket.in
+          </a>
           <p className="text-flat-muted max-w-lg mx-auto">
             Stay inspired — follow us for daily style drops, behind-the-scenes, and new arrivals.
           </p>
