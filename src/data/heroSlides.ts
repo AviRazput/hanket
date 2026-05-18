@@ -10,7 +10,7 @@ export const heroSlides: HeroSlide[] = [
   {
     id: "banner-10",
     imageSrc: "/banner10.jpg",
-    mobileImageSrc: "/banner10.jpg",
+    mobileImageSrc: "/mobile_banner/mobilebanner10.jpg",
     imageAlt: "Summer vibes — lighter days, bolder you",
   },
   {
